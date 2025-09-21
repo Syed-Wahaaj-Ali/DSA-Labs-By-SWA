@@ -100,6 +100,7 @@ int main() {
 
 	cq.dequeue();    // remove front (10)
 	cq.display();    // should print 20 30
+
 	cout << "Front element = " << cq.peek() << endl;
 
 	cq.enqueue(40);  // add 40
