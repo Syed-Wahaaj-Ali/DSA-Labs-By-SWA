@@ -1,8 +1,9 @@
 #include <iostream>
 using namespace std;
 
-/*Syed Wahaaj Ali
-CT-24035
+/*
+   Syed Wahaaj Ali
+   CT-24035
 */
 
 struct Node {
