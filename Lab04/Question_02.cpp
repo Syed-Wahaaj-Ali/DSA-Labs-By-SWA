@@ -1,47 +1,90 @@
 #include <iostream>
-#include <stack>
 using namespace std;
 
-// Syed Wahaaj Ali
-// CT-24035
+/*Syed Wahaaj Ali
+CT-24035
+*/
 
-string buildString(string s) {
-    stack<char> st;
-    for (int i = 0; i < (int)s.length(); i = i + 1) {
-        char c = s[i];
+struct Node {
+    char data;
+    Node* next;
+    Node(char val) {
+        data = val;
+        next = nullptr;
+    }
+};
+
+class Stack {
+private:
+    Node* top;
+public:
+    Stack() {
+        top = nullptr;
+    }
+
+    void push(char val) {
+        Node* newNode = new Node(val);
+        newNode->next = top;
+        top = newNode;
+    }
+
+    char pop() {
+        if (top == nullptr) {
+            return '\0';  // return null char if stack empty
+        }
+        Node* temp = top;
+        char val = temp->data;
+        top = top->next;
+        delete temp;
+        return val;
+    }
+
+    bool isEmpty() {
+        return top == nullptr;
+    }
+
+    string toString() {
+        // Converting stack to string (reverse order since stack = LIFO)
+        string res = "";
+        Node* curr = top;
+        while (curr != nullptr) {
+            res = curr->data + res; // prepend
+            curr = curr->next;
+        }
+        return res;
+    }
+};
+
+string processString(const string& str) {
+    Stack s;
+    for (int i = 0; i < str.length(); i++) {
+        char c = str[i];
         if (c == '#') {
-            if (!st.empty()) {
-                st.pop();
-            }
+            s.pop(); // backspace = remove last char
         } else {
-            st.push(c);
+            s.push(c);
         }
     }
-
-    string result = "";
-    for (int count = (int)st.size(); count > 0; count = count - 1) {
-        char topChar = st.top();
-        result = topChar + result;
-        st.pop();
-    }
-    return result;
-}
-
-bool backspaceCompare(string s, string t) {
-    return buildString(s) == buildString(t);
+    return s.toString();
 }
 
 int main() {
     string s, t;
-    cout << "Enter string s: ";
+    cout << "Enter first string: ";
     cin >> s;
-    cout << "Enter string t: ";
+    cout << "Enter second string: ";
     cin >> t;
 
-    if (backspaceCompare(s, t)) {
-        cout << "true\n";
+    string processedS = processString(s);
+    string processedT = processString(t);
+
+    cout << "First string becomes: " << processedS << endl;
+    cout << "Second string becomes: " << processedT << endl;
+
+    if (processedS == processedT) {
+        cout << "The strings are equal after processing backspaces.\n";
     } else {
-        cout << "false\n";
+        cout << "The strings are NOT equal after processing backspaces.\n";
     }
     return 0;
 }
