@@ -8,11 +8,11 @@ using namespace std;
 
 class MyCircularDeque {
 private:
-    int *arr;       // dynamic array to store elements
-    int front;      // index of front element
-    int rear;       // index of rear element
-    int size;       // current number of elements
-    int capacity;   // maximum capacity of deque
+    int *arr;       // Array to store elements
+    int front;      // Index of front element
+    int rear;       // Index of rear element
+    int size;       // Current number of elements
+    int capacity;   // Maximum capacity
 
 public:
     MyCircularDeque(int k) {
@@ -20,16 +20,16 @@ public:
         capacity = k;
         size = 0;
         front = 0;
-        rear = -1;
+        rear = -1;   // Empty deque state
     }
 
     bool insertFront(int value) {
         if (isFull()) return false;
-        if (size == 0) {   // if first element
+        if (size == 0) {
             front = 0;
             rear = 0;
         } else {
-            // move front backward (circularly)
+            // Move front backward circularly
             front = (front - 1 + capacity) % capacity;
         }
         arr[front] = value;
@@ -39,11 +39,11 @@ public:
 
     bool insertLast(int value) {
         if (isFull()) return false;
-        if (size == 0) {   // if first element
+        if (size == 0) {
             front = 0;
             rear = 0;
         } else {
-            // move rear forward (circularly)
+            // Move rear forward circularly
             rear = (rear + 1) % capacity;
         }
         arr[rear] = value;
@@ -53,16 +53,28 @@ public:
 
     bool deleteFront() {
         if (isEmpty()) return false;
-        // move front forward (circularly)
-        front = (front + 1) % capacity;
+        if (size == 1) {
+            // Reset to empty state
+            front = 0;
+            rear = -1;
+        } else {
+            // Move front forward circularly
+            front = (front + 1) % capacity;
+        }
         size--;
         return true;
     }
 
     bool deleteLast() {
         if (isEmpty()) return false;
-        // move rear backward (circularly)
-        rear = (rear - 1 + capacity) % capacity;
+        if (size == 1) {
+            // Reset to empty state
+            front = 0;
+            rear = -1;
+        } else {
+            // Move rear backward circularly
+            rear = (rear - 1 + capacity) % capacity;
+        }
         size--;
         return true;
     }
@@ -86,20 +98,57 @@ public:
     }
 
     ~MyCircularDeque() {
-        delete[] arr;  // free allocated memory
+        delete[] arr;
     }
 };
 
 int main() {
-    MyCircularDeque dq(3);
+    MyCircularDeque* mcq = new MyCircularDeque(3);
 
-    cout << dq.insertLast(1) << endl;  // 1
-    cout << dq.insertLast(2) << endl;  // 1
-    cout << dq.insertFront(3) << endl; // 1
-    cout << dq.insertFront(4) << endl; // 0 (full)
-    cout << dq.getRear() << endl;      // 2
-    cout << dq.isFull() << endl;       // 1
-    cout << dq.deleteLast() << endl;   // 1
-    cout << dq.insertFront(4) << endl; // 1
-    cout << dq.getFront() << endl;     // 4
+    if (mcq->insertLast(1)) {
+        cout << "Inserted 1 at rear." << endl;
+    } else {
+        cout << "Failed to insert 1 at rear." << endl;
+    }
+
+    if (mcq->insertLast(2)) {
+        cout << "Inserted 2 at rear." << endl;
+    } else {
+        cout << "Failed to insert 2 at rear." << endl;
+    }
+
+    if (mcq->insertFront(3)) {
+        cout << "Inserted 3 at front." << endl;
+    } else {
+        cout << "Failed to insert 3 at front." << endl;
+    }
+
+    if (mcq->insertFront(4)) {
+        cout << "Inserted 4 at front." << endl;
+    } else {
+        cout << "Failed to insert 4 at front." << endl;
+    }
+
+    cout << "Rear element: " << mcq->getRear() << endl;
+
+    if (mcq->isFull())
+        cout << "Deque is full." << endl;
+    else
+        cout << "Deque is not full." << endl;
+
+    if (mcq->deleteLast())
+        cout << "Deleted last element." << endl;
+    else
+        cout << "Failed to delete last element." << endl;
+
+    if (mcq->insertFront(4)) {
+        cout << "Inserted 4 at front." << endl;
+    } else {
+        cout << "Failed to insert 4 at front." << endl;
+    }
+
+    cout << "Front element: " << mcq->getFront() << endl;
+
+    delete mcq;
+    return 0;
 }
