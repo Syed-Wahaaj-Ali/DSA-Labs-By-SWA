@@ -39,12 +39,9 @@ int main() {
 
     cout << "\nBefore Sorting (0 = Red, 1 = White, 2 = Blue): ";
     for (int i = 0; i < n; i++) cout << nums[i] << " ";
-
     sortColors(nums, n);
-
-    cout << "\nAfter Sorting (Red → White → Blue): ";
+    cout << "\nAfter Sorting (Red -> White -> Blue): ";
     for (int i = 0; i < n; i++) cout << nums[i] << " ";
-
     delete[] nums;
     cout << "\n";
     return 0;
